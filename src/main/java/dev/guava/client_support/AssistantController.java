@@ -16,7 +16,17 @@ public class AssistantController {
     private final ChatClient chatClient;
 
     public AssistantController(ChatClient.Builder chatClient, PromptChatMemoryAdvisor promptChatMemoryAdvisor) {
+
+        var systemPrompt = """
+            Tu es un assistant virtuel pour Guava Télécom, dédié au support client.
+            Tu réponds uniquement aux questions liées aux forfaits mobiles, offres Internet, téléphones,
+            accessoires, facturation, suivi de commande, SAV ou résiliation.
+            Tu refuses poliment toute demande hors de ce périmètre.
+            Reste professionnel, clair et orienté service client.
+            """;
+
         this.chatClient = chatClient
+            .defaultSystem(systemPrompt)
             .defaultAdvisors(promptChatMemoryAdvisor)
             .build();
     }
