@@ -6,3 +6,15 @@ GET http://localhost:8080/assistant?question=Mon nom est medmo et je travaille p
 
 ### Test Chat Memory response
 GET http://localhost:8080/assistant?question=Quel est mon nom ?
+
+### Test Chat Memory response
+GET http://localhost:8080/medmo/assistant?question=Quel est mon nom ?
+
+### Test Chat Memory response
+GET http://localhost:8080/medmo/assistant?question=mon nom est mohammed
+
+### Test Chat Memory response
+GET http://localhost:8080/duprat/assistant?question=quel est mon nom ?
+
+### Test Chat Memory response
+GET http://localhost:8080/duprat/assistant?question=mon nom est duprat.
