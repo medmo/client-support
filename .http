@@ -1,2 +1,8 @@
 ## Call assistant
 GET http://localhost:8080/assistant?question=fais moi une blague senegalaise
+
+### Test Chat Memory
+GET http://localhost:8080/assistant?question=Mon nom est medmo et je travaille pour le meetup medmo
+
+### Test Chat Memory response
+GET http://localhost:8080/assistant?question=Quel est mon nom ?
