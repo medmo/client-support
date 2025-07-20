@@ -1,0 +1,2 @@
+## Call assistant
+GET http://localhost:8080/assistant?question=fais moi une blague senegalaise
