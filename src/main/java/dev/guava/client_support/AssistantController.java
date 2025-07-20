@@ -3,8 +3,10 @@ package dev.guava.client_support;
 import org.springframework.ai.chat.client.ChatClient;
 import org.springframework.ai.chat.client.advisor.MessageChatMemoryAdvisor;
 import org.springframework.ai.chat.client.advisor.PromptChatMemoryAdvisor;
+import org.springframework.ai.chat.client.advisor.vectorstore.QuestionAnswerAdvisor;
 import org.springframework.ai.chat.memory.ChatMemory;
 import org.springframework.ai.chat.memory.repository.jdbc.JdbcChatMemoryRepository;
+import org.springframework.ai.vectorstore.pgvector.PgVectorStore;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -14,21 +16,25 @@ import org.springframework.web.bind.annotation.RestController;
 public class AssistantController {
 
     private final ChatClient chatClient;
+    private final PgVectorStore vectorStore;
 
-    public AssistantController(ChatClient.Builder chatClient, PromptChatMemoryAdvisor promptChatMemoryAdvisor) {
+    public AssistantController(ChatClient.Builder chatClient, PromptChatMemoryAdvisor promptChatMemoryAdvisor, PgVectorStore vectorStore) {
 
         var systemPrompt = """
-            Tu es un assistant virtuel pour Guava Télécom, dédié au support client.
-            Tu réponds uniquement aux questions liées aux forfaits mobiles, offres Internet, téléphones,
-            accessoires, facturation, suivi de commande, SAV ou résiliation.
-            Tu refuses poliment toute demande hors de ce périmètre.
-            Reste professionnel, clair et orienté service client.
+            Tu es un assistant virtuel pour Guava Télécom, tu aides le support client à obtenir des informations sur les clients.
+            Tu peux répondre aux questions sur les clients en utilisant les informations stockées dans la base de données.
+            Tu peux fournir les informations personnelles suivantes :
+            - Nom
+            - numéro de téléphone
+            - adresse e-mail
+            - adresse postale
             """;
 
         this.chatClient = chatClient
             .defaultSystem(systemPrompt)
-            .defaultAdvisors(promptChatMemoryAdvisor)
+            .defaultAdvisors(promptChatMemoryAdvisor, new QuestionAnswerAdvisor(vectorStore))
             .build();
+        this.vectorStore = vectorStore;
     }
 
     @GetMapping("{user}/assistant")

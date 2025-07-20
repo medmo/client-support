@@ -18,3 +18,13 @@ GET http://localhost:8080/duprat/assistant?question=quel est mon nom ?
 
 ### Test Chat Memory response
 GET http://localhost:8080/duprat/assistant?question=quel est la capitale de la France ?
+
+### test list des clients
+GET http://localhost:8080/api/clients/
+Content-Type: Application/json
+
+### test RAG
+GET http://localhost:8080/support/assistant?question=quel est le numero de téléphone du code client CLI001 ?
+
+### test RAG response
+GET http://localhost:8080/support/assistant?question=donne moi tous les infos sur le client CLI001 ?
