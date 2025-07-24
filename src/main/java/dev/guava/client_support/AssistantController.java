@@ -1,5 +1,6 @@
 package dev.guava.client_support;
 
+import dev.guava.client_support.actions.ClientsActions;
 import dev.guava.client_support.dtos.ClientInfosResponse;
 import org.springframework.ai.chat.client.ChatClient;
 import org.springframework.ai.chat.client.advisor.MessageChatMemoryAdvisor;
@@ -19,7 +20,10 @@ public class AssistantController {
     private final ChatClient chatClient;
     private final PgVectorStore vectorStore;
 
-    public AssistantController(ChatClient.Builder chatClient, PromptChatMemoryAdvisor promptChatMemoryAdvisor, PgVectorStore vectorStore) {
+    public AssistantController(ChatClient.Builder chatClient,
+                               PromptChatMemoryAdvisor promptChatMemoryAdvisor,
+                               PgVectorStore vectorStore,
+                               ClientsActions clientsActions) {
 
         var systemPrompt = """
             Tu es un assistant virtuel pour Guava Télécom, tu aides le support client à obtenir des informations sur les clients.
@@ -32,6 +36,7 @@ public class AssistantController {
             """;
 
         this.chatClient = chatClient
+            .defaultTools(clientsActions)
             .defaultSystem(systemPrompt)
             .defaultAdvisors(promptChatMemoryAdvisor, new QuestionAnswerAdvisor(vectorStore))
             .build();

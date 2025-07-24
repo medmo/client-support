@@ -32,3 +32,8 @@ GET http://localhost:8080/support/assistant?question=donne moi tous les infos su
 ### test Structured Data
 GET http://localhost:8080/support/assistant-so?question=donne moi tous les infos sur le client CLI001 ?
 
+### Create a new client avec une simple question
+GET http://localhost:8080/support/assistant?question=cree un nouveau client avec le nom de ramses
+
+### Create a new client
+GET http://localhost:8080/support/assistant?question=cree un nouveau client avec le nom de ramses, l'adresse de ramses est 10 rue des fleurs, le téléphone de ramses est 0606060606 et l'email de ramses est ramses@example.com
