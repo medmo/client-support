@@ -28,3 +28,7 @@ GET http://localhost:8080/support/assistant?question=quel est le numero de t√©l√
 
 ### test RAG response
 GET http://localhost:8080/support/assistant?question=donne moi tous les infos sur le client CLI001 ?
+
+### test Structured Data
+GET http://localhost:8080/support/assistant-so?question=donne moi tous les infos sur le client CLI001 ?
+

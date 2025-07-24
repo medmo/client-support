@@ -1,5 +1,6 @@
 package dev.guava.client_support;
 
+import dev.guava.client_support.dtos.ClientInfosResponse;
 import org.springframework.ai.chat.client.ChatClient;
 import org.springframework.ai.chat.client.advisor.MessageChatMemoryAdvisor;
 import org.springframework.ai.chat.client.advisor.PromptChatMemoryAdvisor;
@@ -44,5 +45,14 @@ public class AssistantController {
             .advisors(a -> a.param(ChatMemory.CONVERSATION_ID, user))
             .call()
             .content();
+    }
+
+    @GetMapping("{user}/assistant-so")
+    public ClientInfosResponse assistantStructuredOutput(@PathVariable("user") String user, @RequestParam String question) {
+        return chatClient.prompt()
+            .user(question)
+            .advisors(a -> a.param(ChatMemory.CONVERSATION_ID, user))
+            .call()
+            .entity(ClientInfosResponse.class);
     }
 }
