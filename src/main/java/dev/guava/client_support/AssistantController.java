@@ -2,27 +2,32 @@ package dev.guava.client_support;
 
 import dev.guava.client_support.actions.ClientsActions;
 import dev.guava.client_support.dtos.ClientInfosResponse;
+import io.modelcontextprotocol.client.McpSyncClient;
 import org.springframework.ai.chat.client.ChatClient;
 import org.springframework.ai.chat.client.advisor.MessageChatMemoryAdvisor;
 import org.springframework.ai.chat.client.advisor.PromptChatMemoryAdvisor;
 import org.springframework.ai.chat.client.advisor.vectorstore.QuestionAnswerAdvisor;
 import org.springframework.ai.chat.memory.ChatMemory;
 import org.springframework.ai.chat.memory.repository.jdbc.JdbcChatMemoryRepository;
+import org.springframework.ai.mcp.SyncMcpToolCallbackProvider;
 import org.springframework.ai.vectorstore.pgvector.PgVectorStore;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.List;
+
 @RestController
 public class AssistantController {
 
     private final ChatClient chatClient;
-    private final PgVectorStore vectorStore;
+    //private final PgVectorStore vectorStore;
 
     public AssistantController(ChatClient.Builder chatClient,
-                               PromptChatMemoryAdvisor promptChatMemoryAdvisor,
-                               PgVectorStore vectorStore,
+                               //PromptChatMemoryAdvisor promptChatMemoryAdvisor,
+                               //PgVectorStore vectorStore,
+                               List<McpSyncClient> mcpSyncClients,
                                ClientsActions clientsActions) {
 
         var systemPrompt = """
@@ -36,18 +41,19 @@ public class AssistantController {
             """;
 
         this.chatClient = chatClient
-            .defaultTools(clientsActions)
+            //.defaultTools(clientsActions) add mcp tools capability
+            .defaultToolCallbacks(new SyncMcpToolCallbackProvider(mcpSyncClients))
             .defaultSystem(systemPrompt)
-            .defaultAdvisors(promptChatMemoryAdvisor, new QuestionAnswerAdvisor(vectorStore))
+            //.defaultAdvisors(promptChatMemoryAdvisor, new QuestionAnswerAdvisor(vectorStore))
             .build();
-        this.vectorStore = vectorStore;
+        //this.vectorStore = vectorStore;
     }
 
     @GetMapping("{user}/assistant")
     public String assistant(@PathVariable("user") String user, @RequestParam String question) {
         return chatClient.prompt()
             .user(question)
-            .advisors(a -> a.param(ChatMemory.CONVERSATION_ID, user))
+            //.advisors(a -> a.param(ChatMemory.CONVERSATION_ID, user))
             .call()
             .content();
     }

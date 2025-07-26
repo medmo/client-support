@@ -7,5 +7,5 @@ create table if not exists clients
     name           text not null,
     email          text not null,
     phone_number   text not null,
-    address        text not null,
+    adress        text not null,
 );)

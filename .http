@@ -36,4 +36,7 @@ GET http://localhost:8080/support/assistant-so?question=donne moi tous les infos
 GET http://localhost:8080/support/assistant?question=cree un nouveau client avec le nom de ramses
 
 ### Create a new client
-GET http://localhost:8080/support/assistant?question=cree un nouveau client avec le nom de ramses, l'adresse de ramses est 10 rue des fleurs, le téléphone de ramses est 0606060606 et l'email de ramses est ramses@example.com
+GET http://localhost:8080/support/assistant?question=cree un nouveau client avec le nom de Abdoul, l'adresse de abdoul est 20 rue des fleurs, le téléphone de adboul est 0606060606 et l'email de abdoul est abdoul@example.com
+
+### Get list of clients from mcp servers
+GET http://localhost:8080/support/assistant?question=donne moi la liste de tous les clients dans la base de données ?
