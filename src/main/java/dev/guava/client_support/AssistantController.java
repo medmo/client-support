@@ -22,11 +22,11 @@ import java.util.List;
 public class AssistantController {
 
     private final ChatClient chatClient;
-    //private final PgVectorStore vectorStore;
+    private final PgVectorStore vectorStore;
 
     public AssistantController(ChatClient.Builder chatClient,
-                               //PromptChatMemoryAdvisor promptChatMemoryAdvisor,
-                               //PgVectorStore vectorStore,
+                               PromptChatMemoryAdvisor promptChatMemoryAdvisor,
+                               PgVectorStore vectorStore,
                                List<McpSyncClient> mcpSyncClients,
                                ClientsActions clientsActions) {
 
@@ -44,9 +44,9 @@ public class AssistantController {
             //.defaultTools(clientsActions) add mcp tools capability
             .defaultToolCallbacks(new SyncMcpToolCallbackProvider(mcpSyncClients))
             .defaultSystem(systemPrompt)
-            //.defaultAdvisors(promptChatMemoryAdvisor, new QuestionAnswerAdvisor(vectorStore))
+            .defaultAdvisors(promptChatMemoryAdvisor, new QuestionAnswerAdvisor(vectorStore))
             .build();
-        //this.vectorStore = vectorStore;
+        this.vectorStore = vectorStore;
     }
 
     @GetMapping("{user}/assistant")

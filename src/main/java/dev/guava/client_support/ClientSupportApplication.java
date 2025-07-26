@@ -23,34 +23,36 @@ public class ClientSupportApplication {
 		SpringApplication.run(ClientSupportApplication.class, args);
 	}
 
+    @Bean
+    PromptChatMemoryAdvisor promptChatMemoryAdvisor(DataSource dataSource) {
+        var jdbc = JdbcChatMemoryRepository
+            .builder()
+            .dataSource(dataSource)
+            .build();
+
+        var chatMessageWindow = MessageWindowChatMemory
+            .builder()
+            .chatMemoryRepository(jdbc)
+            .build();
+
+        return PromptChatMemoryAdvisor
+            .builder(chatMessageWindow)
+            .build();
+    }
+
 //    @Bean
-//    PromptChatMemoryAdvisor promptChatMemoryAdvisor(DataSource dataSource) {
-//        var jdbc = JdbcChatMemoryRepository
-//            .builder()
-//            .dataSource(dataSource)
-//            .build();
+//    McpSyncClient mcpSyncClient() {
+//        var mcp = McpClient
+//            .sync(HttpClientSseClientTransport.builder("http://localhost:8081/mcp/message").build()).build();
+//        try {
+//            mcp.initialize();
+//        } catch (Exception e) {
+//            System.out.println( e.getMessage());
+//        }
 //
-//        var chatMessageWindow = MessageWindowChatMemory
-//            .builder()
-//            .chatMemoryRepository(jdbc)
-//            .build();
-//
-//        return PromptChatMemoryAdvisor
-//            .builder(chatMessageWindow)
-//            .build();
+//        return mcp;
 //    }
 
-    @Bean
-    McpSyncClient mcpSyncClient() {
-        var mcp = McpClient
-            .sync(HttpClientSseClientTransport.builder("http://localhost:8081/mcp/message").build()).build();
-        try {
-            mcp.initialize();
-        } catch (Exception e) {
-            System.out.println( e.getMessage());
-        }
 
-        return mcp;
-    }
 
 }
